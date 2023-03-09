@@ -1,0 +1,25 @@
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.App {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+}
+canvas {
+  pointer-events: none;
+  position: absolute !important;
+  top: 0px;
+  left: 0px;
+}
+*::selection {
+  color: none;
+  background: none;
+}
+/* For Mozilla Firefox */
+*::-moz-selection {
+  color: none;
+  background: none;
+}
