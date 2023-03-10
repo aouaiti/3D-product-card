@@ -18,12 +18,21 @@ import {
   Loader,
 } from "@react-three/drei";
 import { Perf } from "r3f-perf";
+
 import Card from "./components/Card";
 import Shoe from "./components/Shoe-draco";
 
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 import { Box, Button, Stack } from "@mui/material";
 
 import "./App.css";
+
+const theme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+});
 
 function App() {
   const ref = useRef();
@@ -56,6 +65,7 @@ function App() {
                     makeDefault
                     global
                     snap
+                    polar={[-0.5, 0.5]}
                     config={{ mass: 2, tension: 400 }}
                   >
                     <Shoe />
@@ -66,29 +76,34 @@ function App() {
           </Suspense>
         </Canvas>
       </Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        <Card ref={ref}>
-          <Stack
-            direction={"column"}
-            sx={{
-              height: "90%",
-              justifyContent: "flex-end",
-              alignItems: "center",
-            }}
-          >
-            <Button color="error" variant="contained">
-              Customize
-            </Button>
-          </Stack>
-        </Card>
-      </Box>
+
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Stack
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <Card className="cardD" ref={ref}>
+            <Stack
+              direction={"column"}
+              sx={{
+                height: "90%",
+                justifyContent: "flex-end",
+                alignItems: "center",
+              }}
+            >
+              <Button color="error" variant="contained">
+                Customize
+              </Button>
+            </Stack>
+          </Card>
+        </Stack>
+      </ThemeProvider>
+
       <Loader />
     </Box>
   );

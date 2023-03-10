@@ -28,7 +28,7 @@ function ActionAreaCard({ children, ...props }, ref) {
         width: "300px",
         height: "400px",
         position: "relative",
-        boxShadow: "0px 0px 10px 2px gray",
+        // boxShadow: "0px 0px 10px 2px gray",
       }}
     >
       <div style={topDiv}></div>
