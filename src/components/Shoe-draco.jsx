@@ -13,7 +13,7 @@ export default function Model(props) {
     Object.values(nodes).forEach((node) => {
       node.isMesh &&
         ((node.receiveShadow = node.castShadow = true),
-        (node.material.color = new THREE.Color(0x000)));
+        (node.material.color = new THREE.Color(0xaaaaaa)));
     });
     console.log(nodes);
   }, [nodes, materials]);
