@@ -80,10 +80,18 @@ function ActionAreaCard({ children, isFullScreen, ...props }, ref) {
         style={botDiv}
       ></motion.div>
       <motion.div
+        initial={{ background: "rgba(255,255,255,1)" }}
+        animate={{
+          background: `${
+            isFullScreen ? "rgba(255,255,255,0)" : "rgba(255,255,255,1)"
+          }`,
+        }}
+        transition={{
+          duration: 1.5,
+        }}
         style={{
           position: "absolute",
-          background: "#fff",
-          zIndex: -4,
+          zIndex: -2,
           width: "100%",
           height: "100%",
         }}

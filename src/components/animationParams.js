@@ -28,4 +28,16 @@ export const animation = {
       duration: 0.5,
     },
   },
+  bgFullScreen: {
+    background: "rgba(255,255,255,0)",
+    transition: {
+      duration: 0.5,
+    },
+  },
+  bgNotFullScreen: {
+    background: "rgba(255,255,255,1)",
+    transition: {
+      duration: 0.5,
+    },
+  },
 };
