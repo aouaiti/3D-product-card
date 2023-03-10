@@ -1,26 +1,20 @@
-import { Suspense, useRef } from "react";
+import { Suspense, useRef, useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import {
   Stage,
-  OrbitControls,
-  useGLTF,
-  Grid,
-  GizmoHelper,
-  GizmoViewport,
-  RandomizedLight,
-  Center,
-  Edges,
   View,
-  Environment,
   PerspectiveCamera,
   PresentationControls,
   Float,
   Loader,
 } from "@react-three/drei";
 import { Perf } from "r3f-perf";
+import { motion, MotionCanvas, LayoutCamera } from "framer-motion-3d";
+import { MotionConfig, useAnimation } from "framer-motion";
 
 import Card from "./components/Card";
 import Shoe from "./components/Shoe-draco";
+import { animation } from "./components/animationParams";
 
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -36,30 +30,22 @@ const theme = createTheme({
 
 function App() {
   const ref = useRef();
+  const [isFullScreen, setFullScreen] = useState(false);
+
   return (
-    <Box>
+    <MotionConfig>
       <Box className="App">
-        <Canvas
-          shadows
-          camera={{
-            position: [3, 3, 3],
-          }}
-        >
-          <Suspense fallback={null}>
+        <Suspense fallback={null}>
+          <Canvas>
             <Perf position="top-left" />
             <color attach={"background"} args={["#red"]} />
-            <Grid
-              sectionColor={"#9d4b4b"}
-              sectionThickness={1.9}
-              cellColor={"#6f6f6f"}
-              args={[35, 35]}
-              fadeDistance={15}
-              position-y={-0.51}
-            />
             <View track={ref}>
               <PerspectiveCamera makeDefault position={[0, 0, 4]} />
-              {/* <ambientLight /> */}
-              <Stage shadows={false} preset={"soft"}>
+              <Stage
+                shadows={isFullScreen ? true : false}
+                preset={"soft"}
+                adjustCamera={false}
+              >
                 <Float floatIntensity={1.4} speed={2}>
                   <PresentationControls
                     makeDefault
@@ -73,8 +59,8 @@ function App() {
                 </Float>
               </Stage>
             </View>
-          </Suspense>
-        </Canvas>
+          </Canvas>
+        </Suspense>
       </Box>
 
       <ThemeProvider theme={theme}>
@@ -87,7 +73,7 @@ function App() {
             height: "100vh",
           }}
         >
-          <Card className="cardD" ref={ref}>
+          <Card className="cardD" isFullScreen={isFullScreen} ref={ref}>
             <Stack
               direction={"column"}
               sx={{
@@ -96,7 +82,11 @@ function App() {
                 alignItems: "center",
               }}
             >
-              <Button color="error" variant="contained">
+              <Button
+                color="error"
+                variant="contained"
+                onClick={() => setFullScreen(!isFullScreen)}
+              >
                 Customize
               </Button>
             </Stack>
@@ -105,7 +95,7 @@ function App() {
       </ThemeProvider>
 
       <Loader />
-    </Box>
+    </MotionConfig>
   );
 }
 

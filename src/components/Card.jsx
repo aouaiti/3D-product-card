@@ -1,4 +1,7 @@
-import { forwardRef } from "react";
+import { forwardRef, useEffect, memo } from "react";
+import { MotionConfig, useAnimation, motion } from "framer-motion";
+
+import { animation } from "./animationParams";
 
 const topDiv = {
   position: "absolute",
@@ -19,23 +22,75 @@ const botDiv = {
   zIndex: "-1",
 };
 
-function ActionAreaCard({ children, ...props }, ref) {
+function ActionAreaCard({ children, isFullScreen, ...props }, ref) {
+  const lowerBackControls = useAnimation();
+  const higherBackControls = useAnimation();
+
+  useEffect(() => {
+    if (!isFullScreen) {
+      (async () => {
+        await lowerBackControls.start("anim4");
+        // await lowerBackControls.start("anim2");
+        await lowerBackControls.start("anim3");
+      })();
+      (async () => {
+        await higherBackControls.start("anim1");
+        // await higherBackControls.start("anim3");
+        await higherBackControls.start("anim2");
+      })();
+    }
+    if (isFullScreen) {
+      (async () => {
+        await lowerBackControls.start("anim3");
+        await lowerBackControls.start("anim4");
+        // await lowerBackControls.start("anim2");
+      })();
+      (async () => {
+        await higherBackControls.start("anim2");
+        await higherBackControls.start("anim1");
+        // await higherBackControls.start("anim3");
+      })();
+    }
+  }, [isFullScreen]);
+
   return (
     <div
       ref={ref}
       {...props}
       style={{
-        width: "300px",
-        height: "400px",
+        width: `${isFullScreen ? "100vw" : "300px"}`,
+        height: `${isFullScreen ? "100vh" : "400px"}`,
+        transition: "1s",
         position: "relative",
         // boxShadow: "0px 0px 10px 2px gray",
       }}
     >
-      <div style={topDiv}></div>
-      <div style={botDiv}></div>
+      <motion.div
+        variants={animation}
+        exit="anim1"
+        initial="anim2"
+        animate={higherBackControls}
+        style={topDiv}
+      ></motion.div>
+      <motion.div
+        variants={animation}
+        exit="anim4"
+        initial="anim3"
+        animate={lowerBackControls}
+        style={botDiv}
+      ></motion.div>
+      <motion.div
+        style={{
+          position: "absolute",
+          background: "#fff",
+          zIndex: -4,
+          width: "100%",
+          height: "100%",
+        }}
+      ></motion.div>
       {children}
     </div>
   );
 }
 
-export default forwardRef(ActionAreaCard);
+export default memo(forwardRef(ActionAreaCard));

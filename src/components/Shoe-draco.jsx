@@ -15,7 +15,6 @@ export default function Model(props) {
         ((node.receiveShadow = node.castShadow = true),
         (node.material.color = new THREE.Color(0xaaaaaa)));
     });
-    console.log(nodes);
   }, [nodes, materials]);
   return (
     <group position-y={1} {...props} dispose={null}>
