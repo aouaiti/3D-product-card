@@ -1,6 +1,10 @@
 import { forwardRef, useEffect, memo } from "react";
-import { MotionConfig, useAnimation, motion } from "framer-motion";
-
+import {
+  MotionConfig,
+  useAnimation,
+  motion,
+  useWillChange,
+} from "framer-motion";
 import { animation } from "./animationParams";
 
 const topDiv = {
@@ -25,6 +29,8 @@ const botDiv = {
 function ActionAreaCard({ children, isFullScreen, ...props }, ref) {
   const lowerBackControls = useAnimation();
   const higherBackControls = useAnimation();
+
+  const willChange = useWillChange();
 
   useEffect(() => {
     if (!isFullScreen) {
@@ -54,7 +60,7 @@ function ActionAreaCard({ children, isFullScreen, ...props }, ref) {
   }, [isFullScreen]);
 
   return (
-    <div
+    <motion.div
       ref={ref}
       {...props}
       style={{
@@ -62,6 +68,7 @@ function ActionAreaCard({ children, isFullScreen, ...props }, ref) {
         height: `${isFullScreen ? "100vh" : "400px"}`,
         transition: "1s",
         position: "relative",
+        willChange,
         // boxShadow: "0px 0px 10px 2px gray",
       }}
     >
@@ -97,7 +104,7 @@ function ActionAreaCard({ children, isFullScreen, ...props }, ref) {
         }}
       ></motion.div>
       {children}
-    </div>
+    </motion.div>
   );
 }
 

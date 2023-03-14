@@ -10,8 +10,10 @@ import {
   PerspectiveCamera,
 } from "@react-three/drei";
 import { Perf } from "r3f-perf";
-import { motion, MotionCanvas, LayoutCamera } from "framer-motion-3d";
 import { MotionConfig, useAnimation } from "framer-motion";
+
+import { useSnapshot } from "valtio";
+import { store, toggleScreen } from "./Features/Valtio_state";
 
 import Card from "./components/Card";
 import Shoe from "./components/Shoe-draco";
@@ -31,24 +33,28 @@ const theme = createTheme({
 function App() {
   const ref = useRef();
   const cameraControlsRef = useRef();
-  const [canvasReady, setCanvasReady] = useState(false);
-  const [isFullScreen, setFullScreen] = useState(false);
+  const snap = useSnapshot(store);
   useLayoutEffect(() => {
     // console.log(cameraControlsRef.current);
-    cameraControlsRef.current?.rotate(Math.PI * 2, 0, true);
-  }, [isFullScreen]);
+    // console.log(state);
+    console.log(store.isFullScreen);
+    store.isFullScreen &&
+      cameraControlsRef.current?.rotate(Math.PI * 2.25, 0, true);
+    !store.isFullScreen &&
+      cameraControlsRef.current?.rotate(Math.PI * -2.25, 0, true);
+  }, [store.isFullScreen]);
   return (
     <MotionConfig>
       <Box className="App">
         <Suspense fallback={null}>
           <Canvas
             onCreated={() => {
-              setCanvasReady(true);
+              // setCanvasReady(true);
             }}
           >
             <Perf position="top-left" />
-            <color attach={"background"} args={["#red"]} />
             <View track={ref}>
+              {/* <color attach={"background"} args={["red"]} /> */}
               <PerspectiveCamera makeDefault position={[0, 0, 4]} />
               <CameraControls
                 ref={cameraControlsRef}
@@ -61,7 +67,7 @@ function App() {
               />
               {/* <color attach={"background"} args={["red"]} /> */}
               <Stage
-                shadows={isFullScreen ? true : false}
+                shadows={store.isFullScreen ? true : false}
                 preset={"soft"}
                 adjustCamera={false}
               >
@@ -92,7 +98,7 @@ function App() {
             height: "100vh",
           }}
         >
-          <Card className="cardD" isFullScreen={isFullScreen} ref={ref}>
+          <Card className="cardD" isFullScreen={store.isFullScreen} ref={ref}>
             <Stack
               direction={"column"}
               sx={{
@@ -104,7 +110,7 @@ function App() {
               <Button
                 color="error"
                 variant="contained"
-                onClick={() => setFullScreen(!isFullScreen)}
+                onClick={() => toggleScreen()}
               >
                 Customize
               </Button>
