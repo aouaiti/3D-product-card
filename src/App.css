@@ -24,14 +24,8 @@ canvas {
   background: none;
 }
 
-.cardD {
+/* .cardD {
   position: relative;
-  /* border-radius: 6px;
-  -webkit-border-radius: 6px;
-  -moz-border-radius: 6px;
-  -ms-border-radius: 6px;
-  -o-border-radius: 6px; */
-  /* overflow: hidden; */
 }
 .cardD::before {
   content: "";
@@ -65,4 +59,4 @@ canvas {
   to {
     box-shadow: 0 0 20px #fff, 0 0 35px #228dff, 0 0 40px #228dff;
   }
-}
+} */

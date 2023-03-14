@@ -35,24 +35,24 @@ function ActionAreaCard({ children, isFullScreen, ...props }, ref) {
   useEffect(() => {
     if (!isFullScreen) {
       (async () => {
-        await lowerBackControls.start("anim4");
+        // await lowerBackControls.start("anim4");
         // await lowerBackControls.start("anim2");
         await lowerBackControls.start("anim3");
       })();
       (async () => {
-        await higherBackControls.start("anim1");
+        // await higherBackControls.start("anim1");
         // await higherBackControls.start("anim3");
         await higherBackControls.start("anim2");
       })();
     }
     if (isFullScreen) {
       (async () => {
-        await lowerBackControls.start("anim3");
+        // await lowerBackControls.start("anim3");
         await lowerBackControls.start("anim4");
         // await lowerBackControls.start("anim2");
       })();
       (async () => {
-        await higherBackControls.start("anim2");
+        // await higherBackControls.start("anim2");
         await higherBackControls.start("anim1");
         // await higherBackControls.start("anim3");
       })();
@@ -66,10 +66,12 @@ function ActionAreaCard({ children, isFullScreen, ...props }, ref) {
       style={{
         width: `${isFullScreen ? "100vw" : "300px"}`,
         height: `${isFullScreen ? "100vh" : "400px"}`,
-        transition: "1s",
+        transition: "0.5s",
         position: "relative",
         willChange,
-        // boxShadow: "0px 0px 10px 2px gray",
+        overflow: "hidden",
+        borderRadius: "10px",
+        boxShadow: "0px 0px 10px 2px gray",
       }}
     >
       <motion.div

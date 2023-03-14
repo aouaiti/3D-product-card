@@ -17,8 +17,13 @@ function Model(props) {
     });
   }, [nodes, materials]);
   return (
-    <group position-y={1} {...props} dispose={null}>
-      <Center>
+    <Center>
+      <group
+        position-y={2}
+        {...props}
+        dispose={null}
+        rotation-z={-Math.PI / 12}
+      >
         <mesh geometry={nodes.shoe.geometry} material={materials.laces} />
         <mesh geometry={nodes.shoe_1.geometry} material={materials.mesh} />
         <mesh geometry={nodes.shoe_2.geometry} material={materials.caps} />
@@ -27,8 +32,8 @@ function Model(props) {
         <mesh geometry={nodes.shoe_5.geometry} material={materials.stripes} />
         <mesh geometry={nodes.shoe_6.geometry} material={materials.band} />
         <mesh geometry={nodes.shoe_7.geometry} material={materials.patch} />
-      </Center>
-    </group>
+      </group>
+    </Center>
   );
 }
 

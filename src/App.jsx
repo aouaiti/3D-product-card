@@ -1,5 +1,6 @@
-import { Suspense, useRef, useState, useEffect, useLayoutEffect } from "react";
-import { Canvas } from "@react-three/fiber";
+import { Suspense, useRef, useEffect, useLayoutEffect } from "react";
+// import * as THREE from "three";
+import { Canvas, useThree, useFrame } from "@react-three/fiber";
 import {
   Stage,
   View,
@@ -8,9 +9,11 @@ import {
   Loader,
   CameraControls,
   PerspectiveCamera,
+  Grid,
+  OrbitControls,
 } from "@react-three/drei";
 import { Perf } from "r3f-perf";
-import { MotionConfig, useAnimation } from "framer-motion";
+import { MotionConfig, transform, useSpring } from "framer-motion";
 
 import { useSnapshot } from "valtio";
 import { store, toggleScreen } from "./Features/Valtio_state";
@@ -23,6 +26,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { Box, Button, Stack } from "@mui/material";
 
 import "./App.css";
+import shadows from "@mui/material/styles/shadows";
 
 const theme = createTheme({
   palette: {
@@ -30,14 +34,31 @@ const theme = createTheme({
   },
 });
 
+const ThreeBGController = () => {
+  const transformer = transform([0, 1], [0, 1], { clamp: true });
+  const { gl } = useThree();
+
+  const spring = useSpring(transformer(!store.isFullScreen), {
+    stiffness: 20,
+    damping: 10,
+  });
+
+  useEffect(() => {
+    spring.set(transformer(store.isFullScreen));
+  }, [store.isFullScreen]);
+
+  useFrame((delta) => {
+    // console.log(spring.get());
+    gl.setClearColor(0xffffff, spring.get());
+  });
+  return null;
+};
+
 function App() {
   const ref = useRef();
   const cameraControlsRef = useRef();
   const snap = useSnapshot(store);
   useLayoutEffect(() => {
-    // console.log(cameraControlsRef.current);
-    // console.log(state);
-    console.log(store.isFullScreen);
     store.isFullScreen &&
       cameraControlsRef.current?.rotate(Math.PI * 2.25, 0, true);
     !store.isFullScreen &&
@@ -47,14 +68,16 @@ function App() {
     <MotionConfig>
       <Box className="App">
         <Suspense fallback={null}>
+          {/* 3D content __________________________________________________*/}
           <Canvas
+            gl={{ alpha: true }}
             onCreated={() => {
               // setCanvasReady(true);
             }}
           >
             <Perf position="top-left" />
             <View track={ref}>
-              {/* <color attach={"background"} args={["red"]} /> */}
+              <ThreeBGController />
               <PerspectiveCamera makeDefault position={[0, 0, 4]} />
               <CameraControls
                 ref={cameraControlsRef}
@@ -65,18 +88,40 @@ function App() {
                 dollySpeed={0}
                 truckSpeed={0}
               />
-              {/* <color attach={"background"} args={["red"]} /> */}
+              {/* <color
+                attach={"background"}
+                args={[new THREE.Color(1, 1, 0, 0.2)]}
+              /> */}
+              {store.isFullScreen && (
+                <Grid
+                  args={[40, 40]}
+                  cellSize={0.6}
+                  cellThickness={1}
+                  sectionSize={1.2}
+                  sectionThickness={1.5}
+                  fadeDistance={20}
+                  fadeStrength={5}
+                  cellColor={"red"}
+                  sectionColor={"#006eb8"}
+                  position-y={-1}
+                />
+              )}
               <Stage
+                // shadows={"contact"}
                 shadows={store.isFullScreen ? true : false}
                 preset={"soft"}
                 adjustCamera={false}
               >
+                {/* <mesh position-y={-1} rotation-x={-Math.PI / 2}>
+                  <planeGeometry args={[100, 100]} />
+                  <meshStandardMaterial />
+                </mesh> */}
                 <Float floatIntensity={1.4} speed={2}>
                   <PresentationControls
                     makeDefault
                     global
                     snap
-                    polar={[-0.5, 0.5]}
+                    polar={[-0.0, 0.0]}
                     config={{ mass: 2, tension: 400 }}
                   >
                     <Shoe />
@@ -87,7 +132,7 @@ function App() {
           </Canvas>
         </Suspense>
       </Box>
-
+      {/* 2D content __________________________________________________*/}
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Stack
