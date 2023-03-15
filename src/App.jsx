@@ -70,6 +70,7 @@ function App() {
         <Suspense fallback={null}>
           {/* 3D content __________________________________________________*/}
           <Canvas
+            eventSource={document.getElementById("root")}
             gl={{ alpha: true }}
             onCreated={() => {
               // setCanvasReady(true);
@@ -124,7 +125,11 @@ function App() {
                     polar={[-0.0, 0.0]}
                     config={{ mass: 2, tension: 400 }}
                   >
-                    <Shoe />
+                    <Shoe
+                      onClick={(e) => (
+                        e.stopPropagation(), console.log(e.object)
+                      )}
+                    />
                   </PresentationControls>
                 </Float>
               </Stage>
@@ -144,22 +149,19 @@ function App() {
           }}
         >
           <Card className="cardD" isFullScreen={store.isFullScreen} ref={ref}>
-            <Stack
-              direction={"column"}
+            <Button
               sx={{
-                height: "90%",
-                justifyContent: "flex-end",
-                alignItems: "center",
+                position: "absolute",
+                bottom: "5%",
+                left: "50%",
+                transform: "translate(-50%,-50%)",
               }}
+              color="error"
+              variant="contained"
+              onClick={() => toggleScreen()}
             >
-              <Button
-                color="error"
-                variant="contained"
-                onClick={() => toggleScreen()}
-              >
-                Customize
-              </Button>
-            </Stack>
+              Customize
+            </Button>
           </Card>
         </Stack>
       </ThemeProvider>
