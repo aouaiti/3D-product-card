@@ -60,7 +60,7 @@ function ActionAreaCard({ children, isFullScreen, ...props }, ref) {
   }, [isFullScreen]);
 
   return (
-    <motion.div
+    <div
       ref={ref}
       {...props}
       style={{
@@ -72,6 +72,7 @@ function ActionAreaCard({ children, isFullScreen, ...props }, ref) {
         overflow: "hidden",
         borderRadius: "10px",
         boxShadow: "0px 0px 10px 2px gray",
+        // cursor: "auto",
       }}
     >
       <motion.div
@@ -106,7 +107,7 @@ function ActionAreaCard({ children, isFullScreen, ...props }, ref) {
         }}
       ></motion.div>
       {children}
-    </motion.div>
+    </div>
   );
 }
 

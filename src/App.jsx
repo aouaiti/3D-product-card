@@ -1,6 +1,6 @@
-import { Suspense, useRef, useEffect, useLayoutEffect } from "react";
+import { Suspense, useRef, useEffect } from "react";
 // import * as THREE from "three";
-import { Canvas, useThree, useFrame } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import {
   Stage,
   View,
@@ -10,23 +10,23 @@ import {
   CameraControls,
   PerspectiveCamera,
   Grid,
-  OrbitControls,
 } from "@react-three/drei";
 import { Perf } from "r3f-perf";
-import { MotionConfig, transform, useSpring } from "framer-motion";
+import { MotionConfig } from "framer-motion";
 
 import { useSnapshot } from "valtio";
-import { store, toggleScreen } from "./Features/Valtio_state";
+import { store, toggleScreen, toggleReady } from "./Features/Valtio_state";
 
 import Card from "./components/Card";
 import Shoe from "./components/Shoe-draco";
+import CursorController from "./components/CursorController";
+import ThreeBGController from "./components/ThreeBgController";
 
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Box, Button, Stack } from "@mui/material";
 
 import "./App.css";
-import shadows from "@mui/material/styles/shadows";
 
 const theme = createTheme({
   palette: {
@@ -34,46 +34,29 @@ const theme = createTheme({
   },
 });
 
-const ThreeBGController = () => {
-  const transformer = transform([0, 1], [0, 1], { clamp: true });
-  const { gl } = useThree();
-
-  const spring = useSpring(transformer(!store.isFullScreen), {
-    stiffness: 20,
-    damping: 10,
-  });
-
-  useEffect(() => {
-    spring.set(transformer(store.isFullScreen));
-  }, [store.isFullScreen]);
-
-  useFrame((delta) => {
-    // console.log(spring.get());
-    gl.setClearColor(0xffffff, spring.get());
-  });
-  return null;
-};
-
 function App() {
   const ref = useRef();
   const cameraControlsRef = useRef();
-  const snap = useSnapshot(store);
-  useLayoutEffect(() => {
+  const { isFullScreen } = useSnapshot(store);
+
+  useEffect(() => {
     store.isFullScreen &&
       cameraControlsRef.current?.rotate(Math.PI * 2.25, 0, true);
     !store.isFullScreen &&
       cameraControlsRef.current?.rotate(Math.PI * -2.25, 0, true);
   }, [store.isFullScreen]);
+
   return (
     <MotionConfig>
       <Box className="App">
         <Suspense fallback={null}>
           {/* 3D content __________________________________________________*/}
           <Canvas
+            className=".canvas"
             eventSource={document.getElementById("root")}
             gl={{ alpha: true }}
             onCreated={() => {
-              // setCanvasReady(true);
+              toggleReady();
             }}
           >
             <Perf position="top-left" />
@@ -122,12 +105,13 @@ function App() {
                     makeDefault
                     global
                     snap
+                    cursor={!isFullScreen}
                     polar={[-0.0, 0.0]}
                     config={{ mass: 2, tension: 400 }}
                   >
                     <Shoe
                       onClick={(e) => (
-                        e.stopPropagation(), console.log(e.object)
+                        e.stopPropagation(), console.log(e.object.material.name)
                       )}
                     />
                   </PresentationControls>
@@ -137,6 +121,7 @@ function App() {
           </Canvas>
         </Suspense>
       </Box>
+
       {/* 2D content __________________________________________________*/}
       <ThemeProvider theme={theme}>
         <CssBaseline />
@@ -165,7 +150,7 @@ function App() {
           </Card>
         </Stack>
       </ThemeProvider>
-
+      <CursorController />
       <Loader />
     </MotionConfig>
   );
