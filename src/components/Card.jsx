@@ -5,7 +5,7 @@ import {
   motion,
   useWillChange,
 } from "framer-motion";
-import { animation } from "./animationParams";
+import { animation } from "../Features/animationParams";
 
 const topDiv = {
   position: "absolute",

@@ -4,9 +4,10 @@ export const store = proxy({
   isCanvasReady: false,
   isFullScreen: false,
   current: null,
+  active: null,
   items: {
     laces: "#aaaaaa",
-    mesh: "red",
+    mesh: "#aaaaaa",
     caps: "#aaaaaa",
     inner: "#aaaaaa",
     sole: "#aaaaaa",
@@ -24,4 +25,7 @@ export const toggleReady = () => {
 };
 export const setCurrentObject = (state) => {
   store.current = state;
+};
+export const setActiveObject = (state) => {
+  store.active = state;
 };

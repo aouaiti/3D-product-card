@@ -24,7 +24,9 @@ function Model(props) {
         onPointerOver={(e) => (
           e.stopPropagation(), setCurrentObject(e.object.material.name)
         )}
-        onPointerOut={(e) => (e.stopPropagation(), setCurrentObject(null))}
+        onPointerOut={(e) =>
+          e.intersections.length === 0 && setCurrentObject(null)
+        }
       >
         <mesh geometry={nodes.shoe.geometry} material={materials.laces} />
         <mesh geometry={nodes.shoe_1.geometry} material={materials.mesh} />
