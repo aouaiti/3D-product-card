@@ -6,6 +6,8 @@ import {
   useWillChange,
 } from "framer-motion";
 import { animation } from "../Features/animationParams";
+import { Button } from "@mui/material";
+import { store, toggleScreen } from "../Features/Valtio_state";
 
 const topDiv = {
   position: "absolute",
@@ -106,6 +108,15 @@ function ActionAreaCard({ children, isFullScreen, ...props }, ref) {
           height: "100%",
         }}
       ></motion.div>
+      <Button
+        className="cardButton"
+        sx={{ position: "absolute" }}
+        color="error"
+        variant="contained"
+        onClick={() => toggleScreen()}
+      >
+        {store.isFullScreen ? "confirm" : "Customize"}
+      </Button>
       {children}
     </div>
   );
