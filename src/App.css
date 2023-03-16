@@ -27,6 +27,13 @@ canvas {
   background: none;
 }
 
+.colorPicker {
+  padding: 20px;
+  position: absolute;
+  top: 0%;
+  right: 0%;
+}
+
 /* .cardD {
   position: relative;
 }

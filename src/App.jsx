@@ -21,6 +21,7 @@ import Card from "./components/Card";
 import Shoe from "./components/Shoe-draco";
 import CursorController from "./components/CursorController";
 import ThreeBGController from "./components/ThreeBgController";
+import ColorController from "./components/ColorController";
 
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -145,12 +146,13 @@ function App() {
               variant="contained"
               onClick={() => toggleScreen()}
             >
-              Customize
+              {store.isFullScreen ? "confirm" : "Customize"}
             </Button>
           </Card>
         </Stack>
       </ThemeProvider>
       <CursorController />
+      <ColorController />
       <Loader />
     </MotionConfig>
   );
