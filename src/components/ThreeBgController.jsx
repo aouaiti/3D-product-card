@@ -2,19 +2,22 @@ import { useEffect } from "react";
 import { useThree, useFrame } from "@react-three/fiber";
 import { transform, useSpring } from "framer-motion";
 import { store } from "../Features/Valtio_state";
+import { useSnapshot } from "valtio";
 
 const ThreeBGController = () => {
+  const { isFullScreen } = useSnapshot(store);
+
   const transformer = transform([0, 1], [0, 1], { clamp: true });
   const { gl } = useThree();
 
-  const spring = useSpring(transformer(!store.isFullScreen), {
+  const spring = useSpring(transformer(!isFullScreen), {
     stiffness: 20,
     damping: 10,
   });
 
   useEffect(() => {
-    spring.set(transformer(store.isFullScreen));
-  }, [store.isFullScreen]);
+    spring.set(transformer(isFullScreen));
+  }, [isFullScreen]);
 
   useFrame((delta) => {
     // console.log(spring.get());

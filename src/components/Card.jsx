@@ -8,6 +8,7 @@ import {
 import { animation } from "../Features/animationParams";
 import { Button } from "@mui/material";
 import { store, toggleScreen } from "../Features/Valtio_state";
+import { useSnapshot } from "valtio";
 
 const topDiv = {
   position: "absolute",
@@ -31,6 +32,7 @@ const botDiv = {
 function ActionAreaCard({ children, isFullScreen, ...props }, ref) {
   const lowerBackControls = useAnimation();
   const higherBackControls = useAnimation();
+  // const { isFullScreen } = useSnapshot();
 
   const willChange = useWillChange();
 
@@ -117,7 +119,7 @@ function ActionAreaCard({ children, isFullScreen, ...props }, ref) {
         variant="contained"
         onClick={() => toggleScreen()}
       >
-        {store.isFullScreen ? "confirm" : "Customize"}
+        {isFullScreen ? "confirm" : "Customize"}
       </Button>
       {children}
     </div>

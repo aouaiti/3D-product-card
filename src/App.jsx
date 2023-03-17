@@ -57,7 +57,7 @@ function App() {
         >
           <Card
             className="cardD"
-            isFullScreen={store.isFullScreen}
+            isFullScreen={isFullScreen}
             ref={(ref) => (refs.current[0] = { current: ref })}
           />
         </Stack>

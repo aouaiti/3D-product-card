@@ -5,7 +5,7 @@ import { useSnapshot } from "valtio";
 import { store, setCurrentObject } from "../Features/Valtio_state";
 
 function Model(props) {
-  const { items } = useSnapshot(store);
+  const { items, active } = useSnapshot(store);
   const { nodes, materials } = useGLTF("/shoe-draco.glb");
   useLayoutEffect(() => {
     Object.values(nodes).forEach((node) => {

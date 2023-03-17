@@ -17,11 +17,10 @@ const ViewComponent = ({ children, refIt, index, ...props }) => {
   const { isFullScreen } = useSnapshot(store);
 
   useEffect(() => {
-    store.isFullScreen &&
-      cameraControlsRef.current?.rotate(Math.PI * 2.25, 0, true);
-    !store.isFullScreen &&
+    isFullScreen && cameraControlsRef.current?.rotate(Math.PI * 2.25, 0, true);
+    !isFullScreen &&
       cameraControlsRef.current?.rotate(Math.PI * -2.25, 0, true);
-  }, [store.isFullScreen]);
+  }, [isFullScreen]);
 
   return (
     <View track={refIt[index]}>
@@ -36,7 +35,7 @@ const ViewComponent = ({ children, refIt, index, ...props }) => {
         dollySpeed={0}
         truckSpeed={0}
       />
-      {store.isFullScreen && (
+      {isFullScreen && (
         <Grid
           args={[40, 40]}
           cellSize={0.6}
@@ -52,7 +51,7 @@ const ViewComponent = ({ children, refIt, index, ...props }) => {
       )}
       <Stage
         // shadows={"contact"}
-        shadows={store.isFullScreen ? true : false}
+        shadows={isFullScreen ? true : false}
         preset={"soft"}
         adjustCamera={false}
       >
