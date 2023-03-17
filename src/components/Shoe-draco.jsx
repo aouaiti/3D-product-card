@@ -1,5 +1,5 @@
 import React, { useRef, useLayoutEffect, memo } from "react";
-import { useGLTF, Center } from "@react-three/drei";
+import { useGLTF, Center, Clone } from "@react-three/drei";
 import * as THREE from "three";
 import { useSnapshot } from "valtio";
 import { store, setCurrentObject } from "../Features/Valtio_state";
@@ -32,46 +32,14 @@ function Model(props) {
           e.stopPropagation(), (store.active = e.object.material.name)
         )}
       >
-        <mesh
-          geometry={nodes.shoe.geometry}
-          material={materials.laces}
-          material-color={items.laces}
-        />
-        <mesh
-          geometry={nodes.shoe_1.geometry}
-          material={materials.mesh}
-          material-color={items.mesh}
-        />
-        <mesh
-          geometry={nodes.shoe_2.geometry}
-          material={materials.caps}
-          material-color={items.caps}
-        />
-        <mesh
-          geometry={nodes.shoe_3.geometry}
-          material={materials.inner}
-          material-color={items.inner}
-        />
-        <mesh
-          geometry={nodes.shoe_4.geometry}
-          material={materials.sole}
-          material-color={items.sole}
-        />
-        <mesh
-          geometry={nodes.shoe_5.geometry}
-          material={materials.stripes}
-          material-color={items.stripes}
-        />
-        <mesh
-          geometry={nodes.shoe_6.geometry}
-          material={materials.band}
-          material-color={items.band}
-        />
-        <mesh
-          geometry={nodes.shoe_7.geometry}
-          material={materials.patch}
-          material-color={items.patch}
-        />
+        <Clone object={nodes.shoe} material-color={items.laces} />
+        <Clone object={nodes.shoe_1} material-color={items.mesh} />
+        <Clone object={nodes.shoe_2} material-color={items.caps} />
+        <Clone object={nodes.shoe_3} material-color={items.inner} />
+        <Clone object={nodes.shoe_4} material-color={items.sole} />
+        <Clone object={nodes.shoe_5} material-color={items.stripes} />
+        <Clone object={nodes.shoe_6} material-color={items.band} />
+        <Clone object={nodes.shoe_7} material-color={items.patch} />
       </group>
     </Center>
   );

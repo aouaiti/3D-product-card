@@ -1,11 +1,10 @@
-import { Suspense, useRef, useEffect } from "react";
-// import * as THREE from "three";
+import { Suspense, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Loader } from "@react-three/drei";
 import { Perf } from "r3f-perf";
-import { MotionConfig } from "framer-motion";
 
 import { store, toggleReady } from "./Features/Valtio_state";
+import { useSnapshot } from "valtio";
 
 import Card from "./components/Card";
 import Shoe from "./components/Shoe-draco";
@@ -15,10 +14,9 @@ import ViewComponent from "./components/ViewComponent";
 
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { Box, Button, Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 
 import "./App.css";
-import { useSnapshot } from "valtio";
 
 const theme = createTheme({
   palette: {
@@ -27,10 +25,10 @@ const theme = createTheme({
 });
 
 function App() {
-  const ref = useRef();
+  const refs = useRef({});
   const { isFullScreen } = useSnapshot(store);
   return (
-    <MotionConfig>
+    <>
       <Box className="App">
         <Suspense fallback={null}>
           {/* 3D content __________________________________________________*/}
@@ -43,24 +41,33 @@ function App() {
             }}
           >
             <Perf position="top-left" />
-            <ViewComponent refIt={ref}>
+            <ViewComponent index={0} refIt={refs.current}>
               <Shoe />
             </ViewComponent>
           </Canvas>
         </Suspense>
       </Box>
 
-      {/* 2D content __________________________________________________*/}
+      {/* 2D content ________________________________________________________*/}
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Stack className="container">
-          <Card className="cardD" isFullScreen={store.isFullScreen} ref={ref} />
+        <Stack
+          className="container"
+          sx={{ flexDirection: "row", justifyContent: "space-around" }}
+        >
+          <Card
+            className="cardD"
+            isFullScreen={store.isFullScreen}
+            ref={(ref) => (refs.current[0] = { current: ref })}
+          />
         </Stack>
       </ThemeProvider>
+
+      {/* Controllers _________________________________________________________*/}
       <CursorController />
       <ColorController />
       <Loader />
-    </MotionConfig>
+    </>
   );
 }
 

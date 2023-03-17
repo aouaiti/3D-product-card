@@ -68,6 +68,8 @@ function ActionAreaCard({ children, isFullScreen, ...props }, ref) {
       style={{
         width: `${isFullScreen ? "100vw" : "300px"}`,
         height: `${isFullScreen ? "100vh" : "400px"}`,
+        minWidth: "300px",
+        minHeight: "400px",
         transition: "0.5s",
         position: "relative",
         willChange,

@@ -12,7 +12,7 @@ import ThreeBGController from "./ThreeBgController";
 import { store } from "../Features/Valtio_state";
 import { useSnapshot } from "valtio";
 
-const ViewComponent = ({ children, refIt, ...props }) => {
+const ViewComponent = ({ children, refIt, index, ...props }) => {
   const cameraControlsRef = useRef();
   const { isFullScreen } = useSnapshot(store);
 
@@ -24,7 +24,7 @@ const ViewComponent = ({ children, refIt, ...props }) => {
   }, [store.isFullScreen]);
 
   return (
-    <View track={refIt}>
+    <View track={refIt[index]}>
       <ThreeBGController />
       <PerspectiveCamera makeDefault position={[0, 0, 4]} />
       <CameraControls
