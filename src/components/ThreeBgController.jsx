@@ -1,11 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, memo } from "react";
 import { useThree, useFrame } from "@react-three/fiber";
 import { transform, useSpring } from "framer-motion";
 import { store } from "../Features/Valtio_state";
 import { useSnapshot } from "valtio";
 
-const ThreeBGController = () => {
-  const { isFullScreen } = useSnapshot(store);
+const ThreeBGController = ({ model }) => {
+  const { isFullScreen } = useSnapshot(store.models[model]);
 
   const transformer = transform([0, 1], [0, 1], { clamp: true });
   const { gl } = useThree();

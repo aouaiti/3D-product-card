@@ -1,12 +1,19 @@
-import React, { useRef, useLayoutEffect, memo } from "react";
+import { useLayoutEffect, memo } from "react";
 import { useGLTF, Center, Clone } from "@react-three/drei";
 import * as THREE from "three";
 import { useSnapshot } from "valtio";
-import { store, setCurrentObject } from "../Features/Valtio_state";
+import {
+  store,
+  setCurrentObject,
+  setActiveObject,
+} from "../Features/Valtio_state";
 
-function Model(props) {
-  const { items, active } = useSnapshot(store);
+function Model({ model }) {
+  const { laces, mesh, caps, inner, sole, stripes, band, patch } = useSnapshot(
+    store.models[model].items
+  );
   const { nodes, materials } = useGLTF("/shoe-draco.glb");
+
   useLayoutEffect(() => {
     Object.values(nodes).forEach((node) => {
       node.isMesh &&
@@ -14,6 +21,7 @@ function Model(props) {
         (node.material.color = new THREE.Color(0xaaaaaa)));
     });
   }, [nodes, materials]);
+
   return (
     <Center>
       <group
@@ -22,29 +30,61 @@ function Model(props) {
         dispose={null}
         rotation-z={-Math.PI / 12}
         onPointerOver={(e) => (
-          e.stopPropagation(), setCurrentObject(e.object.material.name)
+          e.stopPropagation(), setCurrentObject(model, e.object.material.name)
         )}
         onPointerOut={(e) =>
-          e.intersections.length === 0 && setCurrentObject(null)
+          e.intersections.length === 0 && setCurrentObject(model, null)
         }
-        onPointerMissed={() => (store.active = null)}
+        onPointerMissed={() => setActiveObject(model, null)}
         onClick={(e) => (
-          e.stopPropagation(), (store.active = e.object.material.name)
+          e.stopPropagation(), setActiveObject(model, e.object.material.name)
         )}
       >
-        <Clone object={nodes.shoe} material-color={items.laces} />
-        <Clone object={nodes.shoe_1} material-color={items.mesh} />
-        <Clone object={nodes.shoe_2} material-color={items.caps} />
-        <Clone object={nodes.shoe_3} material-color={items.inner} />
-        <Clone object={nodes.shoe_4} material-color={items.sole} />
-        <Clone object={nodes.shoe_5} material-color={items.stripes} />
-        <Clone object={nodes.shoe_6} material-color={items.band} />
-        <Clone object={nodes.shoe_7} material-color={items.patch} />
+        <mesh
+          geometry={nodes.shoe.geometry}
+          material={materials.laces}
+          material-color={laces}
+        />
+        <mesh
+          geometry={nodes.shoe_1.geometry}
+          material={materials.mesh}
+          material-color={mesh}
+        />
+        <mesh
+          geometry={nodes.shoe_2.geometry}
+          material={materials.caps}
+          material-color={caps}
+        />
+        <mesh
+          geometry={nodes.shoe_3.geometry}
+          material={materials.inner}
+          material-color={inner}
+        />
+        <mesh
+          geometry={nodes.shoe_4.geometry}
+          material={materials.sole}
+          material-color={sole}
+        />
+        <mesh
+          geometry={nodes.shoe_5.geometry}
+          material={materials.stripes}
+          material-color={stripes}
+        />
+        <mesh
+          geometry={nodes.shoe_6.geometry}
+          material={materials.band}
+          material-color={band}
+        />
+        <mesh
+          geometry={nodes.shoe_7.geometry}
+          material={materials.patch}
+          material-color={patch}
+        />
       </group>
     </Center>
   );
 }
 
-export default Model;
+export default memo(Model);
 
 useGLTF.preload("/shoe-draco.glb");

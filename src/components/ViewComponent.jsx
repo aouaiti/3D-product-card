@@ -12,9 +12,9 @@ import ThreeBGController from "./ThreeBgController";
 import { store } from "../Features/Valtio_state";
 import { useSnapshot } from "valtio";
 
-const ViewComponent = ({ children, refIt, index, ...props }) => {
+const ViewComponent = ({ children, refIt, model, index, ...props }) => {
   const cameraControlsRef = useRef();
-  const { isFullScreen } = useSnapshot(store);
+  const { isFullScreen } = useSnapshot(store.models[model]);
 
   useEffect(() => {
     isFullScreen && cameraControlsRef.current?.rotate(Math.PI * 2.25, 0, true);
@@ -24,7 +24,7 @@ const ViewComponent = ({ children, refIt, index, ...props }) => {
 
   return (
     <View track={refIt[index]}>
-      <ThreeBGController />
+      <ThreeBGController model={model} />
       <PerspectiveCamera makeDefault position={[0, 0, 4]} />
       <CameraControls
         ref={cameraControlsRef}
@@ -49,12 +49,7 @@ const ViewComponent = ({ children, refIt, index, ...props }) => {
           position-y={-1}
         />
       )}
-      <Stage
-        // shadows={"contact"}
-        shadows={isFullScreen ? true : false}
-        preset={"soft"}
-        adjustCamera={false}
-      >
+      <Stage shadows={false} preset={"soft"} adjustCamera={false}>
         <Float floatIntensity={1.4} speed={2}>
           <PresentationControls
             makeDefault

@@ -26,7 +26,6 @@ const theme = createTheme({
 
 function App() {
   const refs = useRef({});
-  const { isFullScreen } = useSnapshot(store);
   return (
     <>
       <Box className="App">
@@ -41,9 +40,12 @@ function App() {
             }}
           >
             <Perf position="top-left" />
-            <ViewComponent index={0} refIt={refs.current}>
-              <Shoe />
+            <ViewComponent model="model1" index={0} refIt={refs.current}>
+              <Shoe model="model1" />
             </ViewComponent>
+            {/* <ViewComponent model="model2" index={1} refIt={refs.current}>
+              <Shoe model="model2" />
+            </ViewComponent> */}
           </Canvas>
         </Suspense>
       </Box>
@@ -56,10 +58,15 @@ function App() {
           sx={{ flexDirection: "row", justifyContent: "space-around" }}
         >
           <Card
+            model="model1"
             className="cardD"
-            isFullScreen={isFullScreen}
             ref={(ref) => (refs.current[0] = { current: ref })}
           />
+          {/* <Card
+            model="model2"
+            className="cardD"
+            ref={(ref) => (refs.current[1] = { current: ref })}
+          /> */}
         </Stack>
       </ThemeProvider>
 

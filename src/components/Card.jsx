@@ -7,7 +7,7 @@ import {
 } from "framer-motion";
 import { animation } from "../Features/animationParams";
 import { Button } from "@mui/material";
-import { store, toggleScreen } from "../Features/Valtio_state";
+import { store, toggleScreen, setActiveModel } from "../Features/Valtio_state";
 import { useSnapshot } from "valtio";
 
 const topDiv = {
@@ -29,12 +29,14 @@ const botDiv = {
   zIndex: "-1",
 };
 
-function ActionAreaCard({ children, isFullScreen, ...props }, ref) {
+function ActionAreaCard({ children, model, ...props }, ref) {
   const lowerBackControls = useAnimation();
   const higherBackControls = useAnimation();
   // const { isFullScreen } = useSnapshot();
 
   const willChange = useWillChange();
+
+  const { isFullScreen } = useSnapshot(store.models[model]);
 
   useEffect(() => {
     if (!isFullScreen) {
@@ -117,7 +119,7 @@ function ActionAreaCard({ children, isFullScreen, ...props }, ref) {
         sx={{ position: "absolute" }}
         color="error"
         variant="contained"
-        onClick={() => toggleScreen()}
+        onClick={() => (setActiveModel(model), toggleScreen(model))}
       >
         {isFullScreen ? "confirm" : "Customize"}
       </Button>
@@ -126,4 +128,4 @@ function ActionAreaCard({ children, isFullScreen, ...props }, ref) {
   );
 }
 
-export default memo(forwardRef(ActionAreaCard));
+export default forwardRef(ActionAreaCard);
