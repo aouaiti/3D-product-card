@@ -6,8 +6,8 @@ specifiers:
   '@fontsource/roboto': ^4.5.8
   '@mui/icons-material': ^5.11.11
   '@mui/material': ^5.11.11
-  '@react-three/drei': ^9.57.0
-  '@react-three/fiber': ^8.11.7
+  '@react-three/drei': ^9.74.8
+  '@react-three/fiber': ^8.13.1
   '@types/react': ^18.0.27
   '@types/react-dom': ^18.0.10
   '@vitejs/plugin-react': ^3.1.0
@@ -17,7 +17,7 @@ specifiers:
   react: ^18.2.0
   react-colorful: ^5.6.1
   react-dom: ^18.2.0
-  three: ^0.150.1
+  three: ^0.153.0
   valtio: ^1.10.3
   vite: ^4.1.0
 
