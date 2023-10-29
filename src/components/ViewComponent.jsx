@@ -49,7 +49,7 @@ const ViewComponent = ({ children, refIt, model, index, ...props }) => {
           position-y={-1}
         />
       )}
-      <Stage shadows={false} adjustCamera={false}>
+      <Stage shadows={false} adjustCamera={false} environment="city">
         <Float floatIntensity={1.4} speed={2}>
           <PresentationControls
             makeDefault
